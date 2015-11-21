@@ -61,4 +61,19 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
+  def director
+    if params.has_key? :title
+      #debugger
+      unless Movie.find_by_title(params[:title]).director.nil?
+        @movie = Movie.same_director(Movie.find_by_title(params[:title]))
+        flash[:notice] = "Similar Movies to \"#{params[:title]}\":"
+      else
+        flash[:notice] = "'#{:title}' has no director info"
+        redirect_to "/"
+      end
+    else
+      flash[:notice] = "No movie selected!"
+      redirect_to "/"
+    end
+  end
 end
